@@ -1,15 +1,18 @@
 {
-  "name": "hexo-plugin-bilibili",
+  "name": "hexo-tag-azplayer",
   "version": "1.0.0",
-  "description": "A hexo plugin to support bilibili video",
+  "description": "A hexo tag plugin to support bilibili video",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "hexo",
+    "tag",
     "plugin",
-    "bilibili"
+    "bilibili",
+    "player",
+    "插件"
   ],
   "author": "pxysea",
   "license": "ISC"
