@@ -1,0 +1,16 @@
+{
+  "name": "hexo-plugin-bilibili",
+  "version": "1.0.0",
+  "description": "A hexo plugin to support bilibili video",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hexo",
+    "plugin",
+    "bilibili"
+  ],
+  "author": "pxysea",
+  "license": "ISC"
+}
