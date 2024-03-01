@@ -1,15 +1,15 @@
-async function processBilibili(link){
+async function processBilibili(link) {
     const axios = require('axios');
-    let bvid='';
-    let cid=0;
-    let aid=0;
+    let bvid = '';
+    let cid = 0;
+    let aid = 0;
 
-    const getCID = async (id, key='bvid') => {
+    const getCID = async (id, key = 'bvid') => {
         //使用了 https://blog.xxwhite.com/2020/03230.bilibili-bvid.html 提供的api
         //作者 叉叉白 at https://blog.xxwhite.com/    
-    
+
         const query_url = `https://api.bilibili.com/x/player/pagelist?${key}=${id}`
-    
+
         const rq = axios.get(query_url);
         return rq.then((res) => {
             const rq_ = res.data;
@@ -40,35 +40,34 @@ async function processBilibili(link){
         return (r - add) ^ xor;
     };
     let match = link.match(/\/video\/([a-zA-Z0-9]+)\//);
-    if(match && match.length>1){
+    if (match && match.length > 1) {
         bvid = match[1];
         aid = BvtoAV(bvid);
         cid = await getCID(bvid)
     }
-    
-    if(aid && bvid && cid){
+
+    if (aid && bvid && cid) {
         console.debug(`AZplayer: aid=${aid},cid=${cid} `);
 
         return `<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;">
     <iframe src="//player.bilibili.com/player.html?aid=${aid}&bvid=${bvid}&cid=${cid}&page=1&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="100%" scrolling="no" frameborder="0" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"  style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"></iframe>
 </div>
     `
-    }else{
+    } else {
         return link;
     }
-    
+
 }
 
-hexo.extend.tag.register('azplayer', async function (args)
-{
+hexo.extend.tag.register('azplayer', async function (args) {
     let link = args[0];
-    
+
     //https://www.bilibili.com/video/BV1QS421K7mD/
-    if(/^http[s]?:\/\/www.bilibili.com\//.test(link)){
+    if (/^http[s]?:\/\/www.bilibili.com\//.test(link)) {
         return await processBilibili(link);
-    }else{
+    } else {
         // other 
         console.warn(`AZPlayer: Not support ${link}`);
         return `<a href='${link}'>${link}</a>`;
     }
-},{async:true})
+}, { async: true })

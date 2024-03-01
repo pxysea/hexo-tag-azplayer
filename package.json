@@ -15,5 +15,8 @@
     "插件"
   ],
   "author": "pxysea",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
