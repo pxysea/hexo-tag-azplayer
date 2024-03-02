@@ -10,11 +10,22 @@ npm i -save  "https://github.com/pxysea/hexo-tag-azplayer.git"
 ## 使用示例
 B站视频示例
 ```javascript
-{% azplayer  https://www.bilibili.com/video/BV1QS421K7mD/ %}
+{% azplayer  https://www.bilibili.com/video/xxxxxx/  %}
+{% azplayer  https://www.bilibili.com/video/xxxxxxx/ w=100% h=100% allow='allow-top-navigation allow-same-origin allow-forms allow-scripts' %}
 ```
+
 Youtube 示例
 ```javascript
 {% azplayer  https://www.youtube.com/watch?v=xxxxxxxx '标题' %}
+{% azplayer https://www.youtube.com/watch?v=xxxx title='xxxx' w=1280 h=720 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' %}
+```
+
+参数说明:
+```
+title   标题    可选
+w       宽度    可选
+h       高度    可选
+allow           可选
 ```
 ![预览](images/1709311746355.png)
 ![](images/1709311927078.png)

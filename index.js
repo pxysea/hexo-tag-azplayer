@@ -1,7 +1,7 @@
 'use strict';
 
 hexo.config.azplayer = Object.assign({
-    sandbox_enabled: true
+    
 }, hexo.config.azplayer);
 
 const config = hexo.config.azplayer;
@@ -11,6 +11,33 @@ function genIframeCode(iframe) {
     `
 }
 
+/**
+ * 
+ * @param { } key key name
+ * @param {*} args args array
+ * @param {*} dft default value
+ * @author pxysea@163.com
+ */
+function getArg(key,args,dft=''){
+    for(let t of args){
+        let regex = new RegExp(`^['" ]{0,}${key}[ ]{0,}=[ ]{0,}([^'$]+)['" ]{0,}$`,);
+        
+        let match = t.match(regex);
+        // console.info('arg m:',key,t,match);
+        if(match && match.length>1){
+            console.debug('arg :',key,match[1]);
+            return match[1];
+        }
+    }
+    return dft;
+}
+/**
+ * Process bilibili url and generate html code
+ * @param {string} link bilibili video url
+ * @param {Array} args 
+ * @returns iframe code
+ * @author pxysea@163.com
+ */
 async function processBilibili(link,args) {
     const axios = require('axios');
     let bvid = '';
@@ -61,35 +88,45 @@ async function processBilibili(link,args) {
 
     if (aid && bvid && cid) {
         console.debug(`AZplayer: aid=${aid},cid=${cid} `);
-        let sandbox = '';
-        if (config.sandbox_enabled)
-            sandbox = `sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"`;
-
+        let sandbox = getArg('allow',args,'allow-top-navigation allow-same-origin allow-forms allow-scripts');
+        let scrolling=getArg("scrolling",args,'no');
+        let w = getArg('w',args,'100%');
+        let h = getArg('h',args,'100%');
+        
         return genIframeCode(
-            `<iframe src="//player.bilibili.com/player.html?aid=${aid}&bvid=${bvid}&cid=${cid}&page=1&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="100%" height="100%" scrolling="no" frameborder="0" ${sandbox}  style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"></iframe>`
+            `<iframe src="//player.bilibili.com/player.html?aid=${aid}&bvid=${bvid}&cid=${cid}&page=1&high_quality=1&danmaku=0" allowfullscreen="allowfullscreen" width="${w}" height="${h}" scrolling="${scrolling}" frameborder="0" sandbox="${sandbox}"  style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"></iframe>`
         )
     } else {
         return link;
     }
 }
 
+//url rule
 //https://www.youtube.com/watch?v=UuraNOlh-Vk
+//https://youtu.be/6mTlXvEkuvU
 function processYoutube(link, args) {
-    
+    // console.log('process youtube:',args);
     const match = link.match(/\/watch\?v=([a-zA-Z0-9-_]+)/);
     let id='';
-    let title = '';
 
-    if (!match) {
-        return link;
+    if (match && match.length>1) {
+        id = match[1];
     }
-    id = match[1];
-    
-    if (args.length > 1)
-        title = args[1];
+    if(id === ''){
+        match = link.match(/youtu.be\/([a-zA-Z0-9-_]+)/);
+        if (match && match.length>1) {
+            id = match[1];
+        }
+    }
+    if( id === '')
+        return link;
+    let title = getArg('title',args,'az');
+    let w = getArg('w',args,'1280');
+    let h = getArg('h',args,'720');
+    let allow = getArg('allow',args,'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
 
     return genIframeCode(
-        `<iframe width="1276" height="718" src="https://www.youtube.com/embed/${id}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+        `<iframe width="${w}" height="${h}" src="https://www.youtube.com/embed/${id}" title="${title}" frameborder="0" allow="${allow}" allowfullscreen></iframe>`
     );
 }
 
