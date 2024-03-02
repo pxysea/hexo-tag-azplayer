@@ -1,5 +1,7 @@
 # hexo-tag-azplayer
 
+[演示站点](https://az-web.site/)
+
 ## 安装
 进入 hexo 主目录，然后执行
 ```
