@@ -14,7 +14,16 @@
     "player",
     "插件"
   ],
-  "author": "pxysea",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pxysea/hexo-tag-azplayer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pxysea/hexo-tag-azplayer/issues",
+    "email": "pxysea@163.com"
+  },
+  "homepage": "https://azweb.site/",
+  "author": "PixelSea <pxysea@163.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1"
